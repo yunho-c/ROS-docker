@@ -1,0 +1,25 @@
+version: '3.8'
+services:
+  ros_humble:
+    image: osrf/ros:humble-desktop-full
+    container_name: ros_humble
+    # Use host network to communicate with robot
+    network_mode: "host"
+    
+    # Keep the container running
+    command: tail -f /dev/null
+
+    # Environment variables for GUI forwarding
+    environment:
+      - DISPLAY=${DISPLAY}
+      # You might need to set a specific ROS_DOMAIN_ID for discovery
+      # - ROS_DOMAIN_ID=0
+
+    # Mount volumes for GUI forwarding
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
+
+    # Grant access to the TurtleBot3's USB device
+    # Note: The device path (/dev/ttyACM0) might change.
+    devices:
+      - "/dev/ttyACM0:/dev/ttyACM0"
